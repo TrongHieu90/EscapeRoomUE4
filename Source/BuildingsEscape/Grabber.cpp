@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Grabber.h"
+#include <memory>
 
 #define OUT
 // Sets default values for this component's properties
@@ -76,5 +77,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Actor name is: %s"), *(hitActor->GetName()));
 	}
+
+	
 }
 
