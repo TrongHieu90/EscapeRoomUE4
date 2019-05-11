@@ -40,14 +40,13 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 	//Log out to test
 
-	UE_LOG(LogTemp, Warning, TEXT("Location: %s, Rotation: %s"),
+	/*UE_LOG(LogTemp, Warning, TEXT("Location: %s, Rotation: %s"),
 		*PlayerViewPointLocation.ToString(),
-		*PlayerViewPointRotation.ToString());
+		*PlayerViewPointRotation.ToString());*/
 
-	//Continue at 49 Using DebugDrawLine at 9.49 minute mark on video
 
 	//Draw debug red trace line
-	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointLocation.ForwardVector * _reach;
+	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector()* _reach;
 	DrawDebugLine(
 		GetWorld(),
 		PlayerViewPointLocation,
@@ -57,7 +56,25 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		0.f,
 		0.f,
 		10.f);
+
+	//Setup Query Parameters
+	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
 	
 	//Raycasting
+	FHitResult Hit;
+	GetWorld()->LineTraceSingleByObjectType(
+		OUT Hit,
+		PlayerViewPointLocation,
+		LineTraceEnd,
+		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
+		TraceParameters
+		);
+
+	AActor* hitActor = Hit.GetActor();
+
+	if (hitActor)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Actor name is: %s"), *(hitActor->GetName()));
+	}
 }
 
