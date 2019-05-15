@@ -8,6 +8,7 @@
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "Runtime/Engine/Classes/GameFramework/PlayerController.h"	
 #include "Runtime/Engine/Public/DrawDebugHelpers.h"
+#include "Runtime/Engine/Classes/PhysicsEngine/PhysicsHandleComponent.h"
 #include "Grabber.generated.h"
 
 
@@ -30,4 +31,7 @@ public:
 
 private:
 	float _reach = 100.f;
+
+	UPhysicsHandleComponent* PhysicsHandle = nullptr;
+	
 };
