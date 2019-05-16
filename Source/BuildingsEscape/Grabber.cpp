@@ -33,15 +33,16 @@ void UGrabber::SetupInputComponent()
 {
 	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
 
-	if(InputComponent)
+	if (InputComponent)
 	{
-		//bind the input axis
-		InputComponent-> BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
+		UE_LOG(LogTemp, Warning, TEXT("Input component found"))
+			/// Bind the input axis
+			InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
 		InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s missing input component"), *GetOwner()->GetName());
+		UE_LOG(LogTemp, Error, TEXT("%s missing input component"), *GetOwner()->GetName())
 	}
 }
 
