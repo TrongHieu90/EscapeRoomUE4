@@ -20,6 +20,7 @@ class BUILDINGSESCAPE_API UGrabber : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UGrabber();
+	
 
 protected:
 	// Called when the game starts
@@ -35,5 +36,14 @@ private:
 	UPhysicsHandleComponent* PhysicsHandle = nullptr;
 
 	UInputComponent* InputComponent = nullptr;
+
 	void Grab();
+
+	void Release();
+
+	void FindPhysicsComponent();
+
+	void SetupInputComponent();
+
+	FHitResult GetFirstPhysicsBodyInReach();
 };
