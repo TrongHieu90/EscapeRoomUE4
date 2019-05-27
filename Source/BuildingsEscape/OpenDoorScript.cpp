@@ -2,6 +2,7 @@
 
 #include "OpenDoorScript.h"
 
+#define OUT
 
 // Sets default values for this component's properties
 UOpenDoorScript::UOpenDoorScript()
@@ -20,7 +21,6 @@ void UOpenDoorScript::BeginPlay()
 	Super::BeginPlay();
 	Owner = GetOwner();
 
-	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 
 	
 }
@@ -31,7 +31,7 @@ void UOpenDoorScript::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (PressurePlate->IsOverlappingActor(ActorThatOpens))
+	if (GetTotalMassOfActorOnPlate() > 50.0f) //TODO make into parameter
 	{
 		OpenDoor();
 		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
@@ -55,3 +55,21 @@ void UOpenDoorScript::CloseDoor()
 	//Set the door rotation
 	Owner->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
 }
+
+float UOpenDoorScript::GetTotalMassOfActorOnPlate()
+{
+	auto TotalMass = 0.0f;
+
+	TArray<AActor*> OverlappingActors;
+	//find all the overlapping actors
+	PressurePlate->GetOverlappingActors(OUT OverlappingActors);
+
+	//iterate all the weights
+	for(const auto* Actor:OverlappingActors)
+	{
+		TotalMass += Actor->FindComponentByClass<UPrimitiveComponent>()-> GetMass();
+	}
+
+	return TotalMass;
+}
+
